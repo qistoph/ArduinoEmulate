@@ -28,7 +28,6 @@ void read_stdin_to_buffer() {
 	
 	while(kbhit()) {
 		c = getch();
-		printf("c: %d\n", c);
 		if(c == 0x03) { captureSigInt(0); }
 		
 		store_char((unsigned char)c, &rx_buffer);
@@ -44,14 +43,11 @@ uint8_t FakeSerial::available() {
 }
 
 int FakeSerial::read() {
-	printf("read\n");
 	if(rx_buffer.head == rx_buffer.tail) {
 		return -1;
 	} else {
 		unsigned char c = rx_buffer.buffer[rx_buffer.tail];
 		rx_buffer.tail = (rx_buffer.tail + 1) % RX_BUFFER_SIZE;
-
-		printf("c: %d\n", c);
 
 		// Some substitution to return Serial chars
 		switch(c) {
